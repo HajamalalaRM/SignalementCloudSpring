@@ -1,5 +1,5 @@
 package main.projetCloud.domain;
-
+//Test change
 public class Admin {
 	private Integer id;
 	private String email;
