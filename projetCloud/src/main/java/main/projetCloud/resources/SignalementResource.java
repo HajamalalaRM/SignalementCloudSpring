@@ -1,6 +1,7 @@
 package main.projetCloud.resources;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -43,17 +44,26 @@ public class SignalementResource {
 		return liste;
 	}
 
+	@GetMapping("usersignal")
+	public List<Signalement>getUserSignals(@RequestBody Map<String, Object> signaleMap){
+		String usernom = (String)signaleMap.get("usernom");
+		User user =userRepository.findByName(usernom);
+		List<Signalement> liste = signalementRepository.userSignalements(user.getId());
+		return liste;
+	}
+	
 	@PostMapping("/insertsignal")
-	public Signalement createSignalement(
-			@RequestParam(name="usernom") String usernom,
-			@RequestParam String regionname, 
-			@RequestParam String type,
-			@RequestParam Double longitude,
-			@RequestParam Double latitude,
-			@RequestParam String statu,
-			@RequestParam String commentaire,
-			@RequestParam String isAffecte
-			) {
+	public String createSignalement(@RequestBody Map<String, Object> signaleMap) { 
+		String usernom = (String)signaleMap.get("usernom");
+		String regionname = (String)signaleMap.get("regionname");
+		String type =(String)signaleMap.get("type");
+		Double longitude = Double.valueOf((String)signaleMap.get("longitude"));
+		Double latitude = Double.valueOf((String)signaleMap.get("latitude"));
+		String statu = (String)signaleMap.get("statu");
+		String commentaire = (String)signaleMap.get("commentaire");
+		String isAffecte = (String)signaleMap.get("isAffecte");
+
+		System.out.println("UserNom : "+usernom);
 		Signalement signalement = new Signalement();
 		User user = userRepository.findByName(usernom);
 		Region region = regionRepository.regionByNom(regionname);
@@ -66,9 +76,7 @@ public class SignalementResource {
 		signalement.setLatitude(latitude);
 		signalement.setStatut(statu);		
 		signalement.setIsAffecte(isAffecte);
-
-		signalementRepository.createSignalement(usernom, regionname, type, longitude, latitude, statu, commentaire, isAffecte);
-		
-		return null;
+		signalementRepository.createSignalement(usernom, regionname, type, longitude, latitude, statu, commentaire, isAffecte);		
+		return signalement.getCommentaire();
 	}
 }

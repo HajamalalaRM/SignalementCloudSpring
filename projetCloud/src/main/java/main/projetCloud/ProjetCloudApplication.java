@@ -17,9 +17,8 @@ public class ProjetCloudApplication {
 		FilterRegistrationBean<AuthFilter> registrationBean = new FilterRegistrationBean<>();
 		AuthFilter authFilter = new AuthFilter();
 		registrationBean.setFilter(authFilter);
-		registrationBean.addUrlPatterns("/api/categories/*");
 		registrationBean.addUrlPatterns("/api/signalement/*");
-		registrationBean.addUrlPatterns("/api/users/*");
+		registrationBean.addUrlPatterns("/api/responsable/allTypeSignalement");
 		return registrationBean;
 	}
 }

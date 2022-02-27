@@ -16,4 +16,7 @@ public interface SignalementRepository {
 	Integer createSignalement(String usernom,String regionname,String type,Double longitude,Double latitude,String statu,String commentaire,String isAffecte);
 	
 	List<Signalement> allSignalement();
+	
+	List<Signalement> userSignalements(Integer iduser);
+
 }

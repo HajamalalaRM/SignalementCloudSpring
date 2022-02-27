@@ -21,13 +21,14 @@ import main.projetCloud.domain.User;
 import main.projetCloud.service.UserService;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/users")
 public class UserResource {
 
 	@Autowired
 	UserService userService;
 	
+	@CrossOrigin(origins="*", allowedHeaders = "*") 
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, String>> loginUser(@RequestBody Map<String, Object> userMap){
 		String nom = (String) userMap.get("nom");
@@ -37,7 +38,7 @@ public class UserResource {
 //		map.put("message", "loggedIn succefully");
 		return new ResponseEntity(generateJWTToken(user), HttpStatus.OK);
 	}
-	
+	@CrossOrigin(origins="*", allowedHeaders = "*") 
 	@PostMapping("/register")
 	public ResponseEntity<Map<String,String>> registerUser(@RequestBody Map<String, Object> userMap) {
 		String nom = (String) userMap.get("nom");

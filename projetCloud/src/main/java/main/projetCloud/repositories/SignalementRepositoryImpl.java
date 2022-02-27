@@ -26,6 +26,7 @@ public class SignalementRepositoryImpl implements SignalementRepository{
 	private static final String SQL_CREATE = "INSERT INTO SIGNALEMENT(id, idutilisateur, idregion,idtypesignalement, daty,latitude, longitude, statut, commentaire,isaffecte)"
 			+ "VALUES(nextval('signalement_id_seq'::regclass),?,?,?,now(),?,?,?,?,?)";
 	private static final String SQL_FIND_ALL = "SELECT * FROM SIGNALEMENT"; 
+	private static final String SQL_FIND_ALL_USER = "SELECT * FROM SIGNALEMENT where idutilisateur=?"; 
 
 	
 	@Autowired
@@ -48,6 +49,9 @@ public class SignalementRepositoryImpl implements SignalementRepository{
 		User user = userRepository.findByName(usernom);
 		Region region = regionRepository.regionByNom(regionname);
 		TypeSignalement typesign = typeSignalementRepository.typeSignalementBydesc(type);
+		System.out.println("CreateSignalement user: "+user.getEmail());
+		System.out.println("CreateSignalement region: "+region.getNom());
+		System.out.println("CreateSignalement type: "+typesign.getCouleur());
 		try {
 				KeyHolder keyholder = new GeneratedKeyHolder();							
 				jdbcTemplate.update(con ->{
@@ -76,10 +80,18 @@ public class SignalementRepositoryImpl implements SignalementRepository{
 			 List<Signalement> signalement = jdbcTemplate.query(SQL_FIND_ALL, new Object[] {}, signalementRowMapper);		
 			return signalement;
 		}catch(EmptyResultDataAccessException e) {
-			throw new EtAuthException("name of the region not found");
+			throw new EtAuthException("signalement not found");
 		}
 	}
-	
+	@Override
+	public List<Signalement> userSignalements(Integer iduser) {
+		try {
+			 List<Signalement> signalement = jdbcTemplate.query(SQL_FIND_ALL_USER, new Object[] {iduser}, signalementRowMapper);		
+			return signalement;
+		}catch(EmptyResultDataAccessException e) {
+			throw new EtAuthException("signalement not found");
+		}
+	}
 	private RowMapper<Signalement> signalementRowMapper = ((rs, rowNum) -> {
 		return new Signalement(
 				rs.getInt("id"),							
@@ -95,5 +107,7 @@ public class SignalementRepositoryImpl implements SignalementRepository{
 				);
 		//Integer id, Integer idRegion, Integer idTypeSignalement, Integer idUtilisateur, Double longitude, Double latitude, String commentaire, Date daty, String statut, String isAffecte)
 	});
+
+
 	
 }
