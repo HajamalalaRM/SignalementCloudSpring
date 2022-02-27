@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService{
 		}
 		return null;
 	}
-
+//Enregistrement
 	@Override
 	public User registerUser(String nom, String prenom, String sexe, String dtn, String adresse, String email,
 			String password) throws EtAuthException {
