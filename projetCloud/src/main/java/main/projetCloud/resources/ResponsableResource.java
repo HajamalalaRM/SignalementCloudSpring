@@ -19,9 +19,11 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import main.projetCloud.Constants;
 import main.projetCloud.domain.Admin;
+import main.projetCloud.domain.Region;
 import main.projetCloud.domain.Responsable;
 import main.projetCloud.domain.Signalement;
 import main.projetCloud.domain.TypeSignalement;
+import main.projetCloud.repositories.RegionRepository;
 import main.projetCloud.repositories.TypeSignalementRepository;
 import main.projetCloud.service.ResponsableService;
 
@@ -34,6 +36,14 @@ public class ResponsableResource {
 	
 	@Autowired
 	TypeSignalementRepository typeSignalementRepository;
+	
+	@Autowired
+	RegionRepository regionRepository;
+	@GetMapping("/allRegion")
+	public List<Region> getRegions(){
+		List<Region> liste = regionRepository.allRegion();
+		return liste;
+	}
 	
 	@CrossOrigin(origins="*", allowedHeaders = "*") 
 	@PostMapping("/login")
